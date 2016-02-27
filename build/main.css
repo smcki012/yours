@@ -1,5 +1,6 @@
 .page-header {
   text-align: center;
+  border-bottom: #eee 1px solid;
 }
 
 .page-header img {
@@ -10,6 +11,23 @@
   font-size: 2em;
 }
 
+.navigation {
+  border-bottom: #eee 1px solid;
+  padding-bottom: 1em;
+}
+
+.content-link button {
+  float: left;
+  margin-right: 1em;
+}
+
+.content-link h2 {
+  font-size: 1.3em;
+}
+
 .page-footer {
+  margin-top: 2em;
+  padding-top: 1em;
+  border-top: #eee 1px solid;
   text-align: center;
 }

@@ -63,9 +63,13 @@ let Layout = React.createClass({
           </div>
         </div>
 
-        <div className='row content'>
+        <div className='row content-link'>
           <div className='col-md-12'>
-            <p>content area</p>
+            <div className='content-item'>
+              <button className='btn btn-success'>Invest $1</button>
+              <h2><a href='#'>A compilation of cat gifs on imgur</a></h2>
+              <div className='author'>$$$ invested | pubkey | author | date</div>
+            </div>
           </div>
         </div>
 
