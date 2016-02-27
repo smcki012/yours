@@ -57,6 +57,7 @@ let Layout = React.createClass({
             <ul className="nav nav-pills">
               <li role="presentation" className="active"><a href="#">Hot</a></li>
               <li role="presentation"><a href="#">All</a></li>
+              <li role="presentation"><a href="#">New</a></li>
               <li role="presentation"><a href="#">Wallet</a></li>
             </ul>
           </div>
