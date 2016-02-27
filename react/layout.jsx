@@ -24,7 +24,7 @@ let Layout = React.createClass({
         this.setState({
           dattcoreStatus: 'initialized'
         })
-        this.monitorDattCore()
+        // this.monitorDattCore()
       } catch (err) {
         this.setState({
           dattcoreStatus: 'error initializing: ' + err
@@ -42,11 +42,13 @@ let Layout = React.createClass({
   render: function () {
     let dattcore = this.props.dattcore
     let dattcoreStatus = this.state.dattcoreStatus
+    let apptitle = this.props.apptitle
     return (
       <div className='container'>
         <div className='row page-header'>
           <div className='col-md-12'>
-            <h1>Yours</h1>
+            <img src="/yours-logo-white.svg" alt=""/>
+            <h1>{apptitle}</h1>
           </div>
         </div>
 
