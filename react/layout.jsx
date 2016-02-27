@@ -52,12 +52,27 @@ let Layout = React.createClass({
           </div>
         </div>
 
+        <div className='row navigation'>
+          <div className='col-md-12'>
+            <ul className="nav nav-pills">
+              <li role="presentation" className="active"><a href="#">Hot</a></li>
+              <li role="presentation"><a href="#">All</a></li>
+              <li role="presentation"><a href="#">Wallet</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div className='row content'>
+          <div className='col-md-12'>
+            <p>content area</p>
+          </div>
+        </div>
+
         <div className='row page-footer'>
           <div className='col-md-12'>
-            <div className='version-number'>
+            <div className='version-numbers'>
               <p>Yours v{yoursVersion}</p>
-              <p>Status of dattcore: {dattcoreStatus}</p>
-              <p>Datt v{dattcore.version}</p>
+              <p>Status of dattcore v{dattcore.version}: {dattcoreStatus}</p>
             </div>
           </div>
         </div>
