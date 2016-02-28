@@ -15,7 +15,35 @@ let browserHistory = ReactRouter.browserHistory
 let Route = ReactRouter.Route
 let Router = ReactRouter.Router
 
+function fetchData() {
+console.log("inside fetch");
+var API_ENDPOINT = "https://9uc8g4loyk.execute-api.us-west-2.amazonaws.com/prod/"
+var xhttp = new XMLHttpRequest();
+xhttp.onreadystatechange = function() {
+  if (xhttp.readyState == 4 && xhttp.status == 200) {
+  console.log("done processing");
+  console.log(xhttp.responseText);
+    //document.getElementById("demo").innerHTML = xhttp.responseText;
+  }
+};
+xhttp.open("GET", API_ENDPOINT + "link/search", true);
+xhttp.send();
+console.log("done sending");
+}
+
 let PageContentHot = React.createClass({
+  componentDidMount: function () {
+    this.serverRequest = $.get("https://9uc8g4loyk.execute-api.us-west-2.amazonaws.com/prod/link/search",
+      function(result) {
+        var linksList = result.Links[0];
+        console.log(linksList);
+        this.setState({
+
+        }.bind(this));
+
+      })
+  },
+
   render: function () {
     return (
       <div>
@@ -34,12 +62,12 @@ let PageContentHot = React.createClass({
           <div className='col-md-12'>
             <div className='content-item'>
               <button className='btn btn-success'>Invest $1</button>
-              <h2><a href='#'>A compilation of cat gifs on imgur</a></h2>
+              <h2><a href='#'>A compilation of cat gifs on imgur <script> fetchData(); </script></a></h2>
               <div className='author'>$$$ invested | pubkey | author | date</div>
             </div>
             <div className='content-item'>
               <button className='btn btn-success'>Invest $1</button>
-              <h2><a href='#'>An article about how tech both is and isn't in a bubble</a></h2>
+              <h2><a href='#'>An test article about how tech both is and isn't in a bubble</a></h2>
               <div className='author'>$$$ invested | pubkey | author | date</div>
             </div>
             <div className='content-item'>
