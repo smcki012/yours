@@ -13,4 +13,4 @@ Learn more about Yours:
 * [Yours - the product idea](http://blog.datt.co/articles/2016-02-26-yours/)
 * ["Making It, Yours"](http://blog.datt.co/articles/2016-02-26-making-it-yours/)
 
-Yours is powered by [Datt]](https://github.com/dattnetwork/datt).
+Yours is powered by [Datt](https://github.com/dattnetwork/datt).
