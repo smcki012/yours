@@ -26,13 +26,13 @@ let PageContent = require('./PageContent.jsx')
 
 let PageContentAll = React.createClass({
   render: function () {
-    return (<PageContent listName='ALL'/>)
+    return (<PageContent listName='ALL' dattcore={this.props.dattcore}/>)
   }
 })
 
 let PageContentHot = React.createClass({
   render: function () {
-    return (<PageContent listName='HOT'/>)
+    return (<PageContent listName='HOT' dattcore={this.props.dattcore}/>)
   }
 })
 

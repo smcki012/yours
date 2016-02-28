@@ -12,13 +12,13 @@ let PageContent = React.createClass({
   componentDidMount: function () {
     let listName = this.props.listName
     this.serverRequest = $.get(('https://9uc8g4loyk.execute-api.us-west-2.amazonaws.com/prod/link/search?sortParam=' + listName),
-        function (result) {
-          console.log(JSON.stringify(result, null, 4))                                 
-          var linksList = result.Links
+      function (result) {
+        console.log(JSON.stringify(result, null, 4))                                 
+        var linksList = result.Items
 
-          this.setState({
-            contentList: linksList
-          })
+        this.setState({
+          contentList: linksList
+        })
       }.bind(this))
   },
   render: function () {
@@ -43,7 +43,7 @@ let PageContent = React.createClass({
         </div>
         <div className='row content-link'>
           <div className='col-md-12'>
-            <MultiContentItemView contentList={contentList} />
+            <MultiContentItemView contentList={contentList} dattcore={this.props.dattcore}/>
           </div>
         </div>
       </div>
