@@ -9,13 +9,15 @@ let ContentItemView = React.createClass({
     let contentauth = ContentAuth().fromHex(contentItem.datahex)
     let content = contentauth.getContent()
     let url = content.body
+    let body = content.body
     let name = content.name
     let title = content.title
+    let label = content.label
     let pubkey = contentauth.pubkey.toString()
     return (
     <div className='content-item'>
         <button className='btn btn-success'>Endorse</button>
-        <h2><a href='url'>{content.title}</a></h2>
+        <h2><a href={url}>{title}</a></h2>
         <div className='author'>$$$ invested | {pubkey} | {name} | date</div>
         </div>
     )

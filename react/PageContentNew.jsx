@@ -76,13 +76,13 @@ let FormNewContent = React.createClass({
       let dattcore = this.props.dattcore
 
       // create, but do not post or send the new content
+      yield dattcore.asyncSetUserName(name)
       let contentauth = yield dattcore.asyncNewContentAuth(title, label, body)
       console.log('made data:')
       console.log(contentauth.toBuffer().toString('hex'))
-      yield dattcore.asyncSetUserName(name)
       let obj = {
         datahex: contentauth.toBuffer().toString('hex'),
-        dataidhex: contentauth.getHash().toString('hex') // TODO: async/worker
+        LINK_ID: contentauth.getHash().toString('hex') // TODO: async/worker
       }
       let str = JSON.stringify(obj)
       console.log('sending')
