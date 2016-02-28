@@ -96,7 +96,6 @@ let PageContentAll = React.createClass({
 let PageContentNew = React.createClass({
   render: function () {
     return (
-
       <div>
         <div className='row navigation'>
           <div className='col-md-12'>
