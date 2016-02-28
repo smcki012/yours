@@ -113,6 +113,9 @@ let PageContentNew = React.createClass({
 })
 
 let PageWallet = React.createClass({
+  propTypes: {
+    dattcore: React.PropTypes.object
+  },
   render: function () {
     return (
       <div>
@@ -126,6 +129,170 @@ let PageWallet = React.createClass({
             </ul>
           </div>
         </div>
+
+        <div className='row content-link'>
+          <div className='col-md-12'>
+            <BoxBitcoin dattcore={this.props.dattcore}/>
+          </div>
+        </div>
+      </div>
+    )
+  }
+})
+
+let BoxBitcoin = React.createClass({
+  getInitialState: function () {
+    return {
+      unconfirmedBalanceBits: 0,
+      confirmedBalanceBits: 0,
+      totalBalanceBits: 0,
+      blockheightnum: 0,
+      depositAddress: '',
+      toAddress: '',
+      toAmountBitsString: ''
+    }
+  },
+
+  propTypes: {
+    dattcore: React.PropTypes.object
+  },
+
+  setStateFromDattCore: function () {
+    return asink(function * () {
+      let dattcore = this.props.dattcore
+      let info = yield dattcore.asyncGetLatestBlockInfo()
+      this.setState({
+        blockheightnum: info.height
+      })
+    }, this)
+  },
+
+  componentWillMount: function () {
+    this.monitorDattCore()
+  },
+
+  componentDidMount: function () {
+    return this.setStateFromDattCore()
+  },
+
+  componentWillReceiveProps: function () {
+    return this.setStateFromDattCore()
+  },
+
+  monitorDattCore: function () {
+    let dattcore = this.props.dattcore
+    dattcore.on('bitcoin-balance', this.handleBitcoinBalance)
+  },
+
+  handleBitcoinBalance: function (obj) {
+    let unconfirmedBalanceBits = Math.round(obj.unconfirmedBalanceSatoshis / 100)
+    let confirmedBalanceBits = Math.round(obj.confirmedBalanceSatoshis / 100)
+    let totalBalanceBits = Math.round(obj.totalBalanceSatoshis / 100)
+
+    this.setState({
+      unconfirmedBalanceBits,
+      confirmedBalanceBits,
+      totalBalanceBits})
+  },
+
+  handleReceive: function () {
+    return asink(function * () {
+      let dattcore = this.props.dattcore
+      let DattCore = dattcore.constructor
+      let address = yield dattcore.asyncGetNewExtAddress()
+      let depositAddress = yield DattCore.CryptoWorkers.asyncAddressStringFromAddress(address)
+      this.setState({depositAddress})
+    }, this)
+  },
+
+  handleToAddressChange: function (el) {
+    this.setState({
+      toAddress: el.target.value
+    })
+  },
+
+  handleToAmountChange: function (el) {
+    this.setState({
+      toAmount: el.target.value
+    })
+  },
+
+  handleSend: function (el) {
+    return asink(function * () {
+      el.preventDefault()
+      let dattcore = this.props.dattcore
+      let DattCore = dattcore.constructor
+      let toAddressString = this.state.toAddress
+      let toAmountBits = parseInt(this.state.toAmount, 10)
+      let satoshis = toAmountBits * 100
+      let address = yield DattCore.CryptoWorkers.asyncAddressFromAddressString(toAddressString)
+      yield dattcore.asyncBuildSignAndSendTransaction(address, satoshis)
+      this.setState({
+        toAddress: '',
+        toAmount: ''
+      })
+    }, this)
+  },
+
+  render: function () {
+    return (
+      <div className='info-box'>
+        <h2>My Bitcoin</h2>
+        <p>
+          Confirmed balance:
+          {this.state.confirmedBalanceBits} bits
+        </p>
+        <p>
+          Unconfirmed balance:
+          {this.state.unconfirmedBalanceBits} bits
+        </p>
+        <p>
+          Total balance:
+          {this.state.totalBalanceBits} bits
+        </p>
+        <p>
+          Latest block height:
+          {this.state.blockheightnum}
+        </p>
+        <p>
+          <button className='btn btn-default' onClick={this.handleReceive}>
+            Receive
+          </button>
+        </p>
+        <p>
+          Deposit Address:
+          <br/>
+          {this.state.depositAddress}
+        </p>
+        <form>
+          <div className='form-group'>
+            <label htmlFor='toAddress'>
+              To Address
+            </label>
+            <input
+              type='text'
+              className='form-control'
+              id='toAddress'
+              placeholder='Label'
+              onChange={this.handleToAddressChange}
+              value={this.state.toAddress} />
+          </div>
+          <div className='form-group'>
+            <label htmlFor='toAmount'>
+              # of Bits
+            </label>
+            <input
+              type='text'
+              className='form-control'
+              id='toAmount'
+              placeholder='Label'
+              onChange={this.handleToAmountChange}
+              value={this.state.toAmount} />
+          </div>
+          <button type='submit' className='btn btn-default' onClick={this.handleSend}>
+            Send
+          </button>
+        </form>
       </div>
     )
   }
@@ -165,6 +332,13 @@ let Layout = React.createClass({
     let dattcore = this.props.dattcore
     let dattcoreStatus = this.state.dattcoreStatus
     let apptitle = this.props.apptitle
+
+    function createElement (Component, props) {
+      return (
+        <Component dattcore={props.dattcore}/>
+      )
+    }
+
     return (
       <div className='container'>
         <div className='row page-header'>
@@ -174,7 +348,7 @@ let Layout = React.createClass({
           </div>
         </div>
 
-        <Router history={browserHistory}>
+        <Router history={browserHistory} createElement={(Component, props) => <Component dattcore={dattcore}/>}>
           <Route path="/" component={PageContentHot}/>
           <Route path="/all" component={PageContentAll}/>
           <Route path="/new" component={PageContentNew}/>
