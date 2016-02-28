@@ -5,13 +5,16 @@ let ContentItemView = React.createClass({
   handleSubmit: function (el) {
     return asink(function *() {
       console.log('submit was called')
+      // get who to send to from server
       el.preventDefault()
       let contentItem = this.props.contentItem
       let DattCore = dattcore.constructor
-    let ContentAuth = DattCore.ContentAuth
+      let ContentAuth = DattCore.ContentAuth
       let contentauth = ContentAuth().fromHex(contentItem.datahex)
       let address = contentauth.address
       yield dattcore.asyncBuildSignAndSendTransaction(address, 5000 * 1e2)
+      // tell server that i just paid. tell server what my bitcoin address is
+      // and what content id i just upvoted.
     }, this)
   },
 
