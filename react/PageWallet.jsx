@@ -13,12 +13,14 @@ let PageWallet = React.createClass({
     <div>
         <div className='row navigation'>
           <div className='col-md-12'>
-            <ul className='nav nav-pills'>
-              <li role='presentation'><Link to={`/`}>Hot</Link></li>
-              <li role='presentation'><Link to={`/all/`}>All</Link></li>
-              <li role='presentation'><Link to={`/new/`}>New</Link></li>
-              <li role='presentation' className='active'><Link to={`/wallet/`}>Wallet</Link></li>
-            </ul>
+            <div id='cssmenu'>
+              <ul className='nav nav-pills'>
+                <li role='presentation'><Link to={`/`}>Hot</Link></li>
+                <li role='presentation'><Link to={`/all/`}>All</Link></li>
+                <li role='presentation'><Link to={`/new/`}>New</Link></li>
+                <li role='presentation' className='active'><Link to={`/wallet/`}>Wallet</Link></li>
+              </ul>
+            </div>
           </div>
         </div>
 

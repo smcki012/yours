@@ -34,12 +34,14 @@ let PageContent = React.createClass({
     return (
       <div>
         <div className='col-md-12'>
-          <ul className="nav nav-pills">
-            <li role="presentation" className={activePage.hot}><Link to={`/`}>Hot</Link></li>
-            <li role="presentation" className={activePage.all}><Link to={`/all/`}>All</Link></li>
-            <li role="presentation"><Link to={`/new/`}>New</Link></li>
-            <li role="presentation"><Link to={`/wallet/`}>Wallet</Link></li>
-          </ul>
+          <div id='cssmenu'>
+            <ul className="nav nav-pills">
+              <li role="presentation" className={activePage.hot}><Link to={`/`}>Hot</Link></li>
+              <li role="presentation" className={activePage.all}><Link to={`/all/`}>All</Link></li>
+              <li role="presentation"><Link to={`/new/`}>New</Link></li>
+              <li role="presentation"><Link to={`/wallet/`}>Wallet</Link></li>
+            </ul>
+          </div>
         </div>
         <div className='row content-link'>
           <div className='col-md-12'>

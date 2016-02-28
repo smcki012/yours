@@ -1,6 +1,6 @@
 .page-header {
   text-align: center;
-  border-bottom: #eee 1px solid;
+  border-bottom: 0;
 }
 
 .page-header img {
@@ -12,7 +12,6 @@
 }
 
 .navigation {
-  border-bottom: #eee 1px solid;
   padding-bottom: 1em;
 }
 
