@@ -175,6 +175,10 @@ let BoxBitcoin = React.createClass({
     }, this)
   },
 
+  componentWillUnmount: function () {
+    this.unmonitorDattCore()
+  },
+
   componentDidMount: function () {
     return this.setStateFromDattCore()
   },
@@ -186,6 +190,11 @@ let BoxBitcoin = React.createClass({
   monitorDattCore: function () {
     let dattcore = this.props.dattcore
     dattcore.on('bitcoin-balance', this.handleBitcoinBalance)
+  },
+
+  unmonitorDattCore: function () {
+    let dattcore = this.props.dattcore
+    dattcore.removeListener('bitcoin-balance', this.handleBitcoinBalance)
   },
 
   handleBitcoinBalance: function (obj) {
