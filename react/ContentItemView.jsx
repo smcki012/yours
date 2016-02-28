@@ -70,6 +70,7 @@ let ContentItemView = React.createClass({
     let ContentAuth = DattCore.ContentAuth
     let contentauth = ContentAuth().fromHex(contentItem.datahex)
     let content = contentauth.getContent()
+    let date = contentauth.date.toString()
     let url = content.body
     let body = content.body
     let name = content.name
@@ -81,7 +82,7 @@ let ContentItemView = React.createClass({
     <div className='content-item'>
         <button className='btn btn-success' onClick={this.handleSubmit}>Endorse</button>
         <h2><a href={url}>{title}</a></h2>
-        <div className='author'>$$$ invested | {pubkey} | {name} | date</div>
+        <div className='author'>{pubkey} | {name} | {date}</div>
         </div>
     )
   }
