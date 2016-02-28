@@ -77,8 +77,20 @@ let FormNewContent = React.createClass({
 
       // create, but do not post or send the new content
       let contentauth = yield dattcore.asyncNewContentAuth(title, label, body)
+      console.log('made data:')
       console.log(contentauth.toBuffer().toString('hex'))
       yield dattcore.asyncSetUserName(name)
+      let obj = {
+        datahex: contentauth.toBuffer().toString('hex'),
+        dataidhex: contentauth.getHash().toString('hex') // TODO: async/worker
+      }
+      let str = JSON.stringify(obj)
+      console.log('sending')
+      console.log(obj)
+      this.serverRequest = $.post('https://9uc8g4loyk.execute-api.us-west-2.amazonaws.com/prod/link', str)
+      .done(function (result) {
+        console.log('submitted data. result: ' + result)
+      })
 
       this.setState(this.getInitialState())
     }, this)
