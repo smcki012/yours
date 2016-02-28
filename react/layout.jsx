@@ -15,66 +15,86 @@ let browserHistory = ReactRouter.browserHistory
 let Route = ReactRouter.Route
 let Router = ReactRouter.Router
 
-function fetchData() {
-console.log("inside fetch");
-var API_ENDPOINT = "https://9uc8g4loyk.execute-api.us-west-2.amazonaws.com/prod/"
-var xhttp = new XMLHttpRequest();
-xhttp.onreadystatechange = function() {
-  if (xhttp.readyState == 4 && xhttp.status == 200) {
-  console.log("done processing");
-  console.log(xhttp.responseText);
-    //document.getElementById("demo").innerHTML = xhttp.responseText;
-  }
-};
-xhttp.open("GET", API_ENDPOINT + "link/search", true);
-xhttp.send();
-console.log("done sending");
-}
 
-let PageContentHot = React.createClass({
-  componentDidMount: function () {
-    this.serverRequest = $.get("https://9uc8g4loyk.execute-api.us-west-2.amazonaws.com/prod/link/search",
-      function(result) {
-        var linksList = result.Links[0];
-        console.log(linksList);
-        this.setState({
-
-        }.bind(this));
-
-      })
-  },
-
+let NavigationBar = React.createClass({
   render: function () {
     return (
-      <div>
-        <div className='row navigation'>
-          <div className='col-md-12'>
-            <ul className="nav nav-pills">
-              <li role="presentation" className="active"><Link to={`/`}>Hot</Link></li>
-              <li role="presentation"><Link to={`/all/`}>All</Link></li>
-              <li role="presentation"><Link to={`/new/`}>New</Link></li>
-              <li role="presentation"><Link to={`/wallet/`}>Wallet</Link></li>
-            </ul>
-          </div>
+      <div className='row navigation'>
+        <div className='col-md-12'>
+          <ul className="nav nav-pills">
+            <li role="presentation" className="active"><Link to={`/`}>Hot</Link></li>
+            <li role="presentation"><Link to={`/all/`}>All</Link></li>
+            <li role="presentation"><Link to={`/new/`}>New</Link></li>
+            <li role="presentation"><Link to={`/wallet/`}>Wallet</Link></li>
+          </ul>
         </div>
+      </div>
+    )
+  }
+})
 
+
+let ContentItem = function ContentItem(title) {
+  this.title = title
+}
+
+let PageContentHotItems = []
+PageContentHotItems.push(new ContentItem('A compilation of cat gifs on imgur'))
+PageContentHotItems.push(new ContentItem('An article about how tech both is and isn\'t in a bubble'))
+PageContentHotItems.push(new ContentItem('An article about how expensive rent in San Francisco is'))
+
+let PageContentAllItems = []
+PageContentAllItems.push(new ContentItem('An article about how tech both is and isn\'t in a bubble'))
+PageContentAllItems.push(new ContentItem('An article about how expensive rent in San Francisco is'))
+PageContentAllItems.push(new ContentItem('A compilation of cat gifs on imgur'))
+
+let PageContentNewItems = []
+PageContentNewItems.push('')
+
+let ContentItemView = React.createClass({    
+  render: function () {
+    let contentItem = this.props.contentItem
+    return (
+      <div className='content-item'>
+        <button className='btn btn-success'>Endorse</button>
+        <h2><a href='#'>{contentItem.title}</a></h2>
+        <div className='author'>$$$ invested | pubkey | author | date</div>
+      </div>
+    )
+  }
+})
+
+let MultiContentItemView = React.createClass({
+  render: function () {
+    return React.createElement('div', null, this.props.contentList.map(function(contentItem) {
+      return <ContentItemView contentItem={contentItem}/>
+    }))
+  }
+})
+  
+let PageContent = React.createClass({
+  getInitialState: function () {
+    return {}
+  },
+  componentDidMount: function () {
+    let listName = this.props.listName
+    this.serverRequest = $.get(('https://9uc8g4loyk.execute-api.us-west-2.amazonaws.com/prod/link/search?sortParam='+listName),
+                               function(result) {
+                                 var linksList = result.Links[0]
+                                 console.log(JSON.stringify(result, null, 4))
+                                 this.setState({
+                                   contentList: linksList
+                                 }.bind(this));
+                               })
+  },    
+  render: function () {
+    let contentList = this.state.contentList || []
+    return (
+      <div>
+        <NavigationBar />
         <div className='row content-link'>
           <div className='col-md-12'>
-            <div className='content-item'>
-              <button className='btn btn-success'>Invest $1</button>
-              <h2><a href='#'>A compilation of cat gifs on imgur <script> fetchData(); </script></a></h2>
-              <div className='author'>$$$ invested | pubkey | author | date</div>
-            </div>
-            <div className='content-item'>
-              <button className='btn btn-success'>Invest $1</button>
-              <h2><a href='#'>An test article about how tech both is and isn't in a bubble</a></h2>
-              <div className='author'>$$$ invested | pubkey | author | date</div>
-            </div>
-            <div className='content-item'>
-              <button className='btn btn-success'>Invest $1</button>
-              <h2><a href='#'>An article about how expensive rent in San Francisco is</a></h2>
-              <div className='author'>$$$ invested | pubkey | author | date</div>
-            </div>
+            <MultiContentItemView contentList={contentList} />
           </div>
         </div>
       </div>
@@ -83,41 +103,14 @@ let PageContentHot = React.createClass({
 })
 
 let PageContentAll = React.createClass({
+    render: function () {
+      return (<PageContent contentList={PageContentAllItems} listName='ALL'/>)
+    }
+})
+  
+let PageContentHot = React.createClass({
   render: function () {
-    return (
-      <div>
-        <div className='row navigation'>
-          <div className='col-md-12'>
-            <ul className="nav nav-pills">
-              <li role="presentation"><Link to={`/`}>Hot</Link></li>
-              <li role="presentation" className="active"><Link to={`/all/`}>All</Link></li>
-              <li role="presentation"><Link to={`/new/`}>New</Link></li>
-              <li role="presentation"><Link to={`/wallet/`}>Wallet</Link></li>
-            </ul>
-          </div>
-        </div>
-
-        <div className='row content-link'>
-          <div className='col-md-12'>
-            <div className='content-item'>
-              <button className='btn btn-success'>Invest $1</button>
-              <h2><a href='#'>An article about how tech both is and isn't in a bubble</a></h2>
-              <div className='author'>$$$ invested | pubkey | author | date</div>
-            </div>
-            <div className='content-item'>
-              <button className='btn btn-success'>Invest $1</button>
-              <h2><a href='#'>An article about how expensive rent in San Francisco is</a></h2>
-              <div className='author'>$$$ invested | pubkey | author | date</div>
-            </div>
-            <div className='content-item'>
-              <button className='btn btn-success'>Invest $1</button>
-              <h2><a href='#'>A compilation of cat gifs on imgur</a></h2>
-              <div className='author'>$$$ invested | pubkey | author | date</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    )
+    return (<PageContent contentList={PageContentHotItems} listName='HOT'/>)
   }
 })
 
@@ -125,16 +118,7 @@ let PageContentNew = React.createClass({
   render: function () {
     return (
       <div>
-        <div className='row navigation'>
-          <div className='col-md-12'>
-            <ul className="nav nav-pills">
-              <li role="presentation"><Link to={`/`}>Hot</Link></li>
-              <li role="presentation"><Link to={`/all/`}>All</Link></li>
-              <li role="presentation" className="active"><Link to={`/new/`}>New</Link></li>
-              <li role="presentation"><Link to={`/wallet/`}>Wallet</Link></li>
-            </ul>
-          </div>
-        </div>
+        <NavigationBar />
       </div>
     )
   }
