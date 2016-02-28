@@ -32,6 +32,12 @@ module.exports.createAppServer = function createAppServer (port) {
   // The front-end is just static HTML, CSS and JS files.
   app.use(express.static(path.join(__dirname, '../build')))
 
+  // We must route all the pages to static to make sure the index.html file
+  // gets delivered when the user browser to, say, /new
+  app.use('/all', express.static(path.join(__dirname, '../build')))
+  app.use('/new', express.static(path.join(__dirname, '../build')))
+  app.use('/wallet', express.static(path.join(__dirname, '../build')))
+
   let server = app.listen(port, () => {
     let host = server.address().address
     let port = server.address().port
